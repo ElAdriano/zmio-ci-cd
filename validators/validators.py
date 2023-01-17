@@ -216,7 +216,8 @@ class StringFieldValidator(BaseFieldValidator):  # noqa: C901
     Validator string field class.
 
     Possible keyword arguments:
-    field_name  - type: str     - validator field name (same as attribute while defining validator - it's used when raising validation error if necessary).
+    field_name  - type: str     - validator field name (same as attribute while defining validator,
+                                  it's used when raising validation error if necessary).
     required    - type: bool    - boolean value whether specific validator field is required or not.
     nullable    - type: bool    - information whether field value can be None or not.
     min_length  - type: int     - minimal string field length.
