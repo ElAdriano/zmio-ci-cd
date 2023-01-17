@@ -46,9 +46,8 @@ if pathlib.Path("./network_{size}x{size}".format(size=size)).exists():
     print("Model loaded...")
 
 def load_data(size: int):
-
-    learning_dataset = { "input": [], "output": [] }
-    validation_dataset = { "input": [], "output": [] }
+    learning_dataset = {"input": [], "output": []}
+    validation_dataset = {"input": [], "output": []}
 
     learning_dataset_file = open("../data_generator/ttt_{size}x{size}_data.dat".format(size=size), "r")
     content_lines = learning_dataset_file.read().split("\n")
@@ -103,7 +102,6 @@ if "--learn" in sys.argv:
     print("Network learnt...")
 
 def check_game_status(grid, grid_size):
-
     # initiate checkers
     rows_sums = [0 for i in range(grid_size)]
     columns_sums = [0 for i in range(grid_size)]
@@ -113,18 +111,18 @@ def check_game_status(grid, grid_size):
     for row in range(0, grid_size):
         for column in range(0, grid_size):
             field_value = grid[row * grid_size + column]
-            if field_value == 1: # 'X' player
+            if field_value == 1:  # 'X' player
                 rows_sums[row] += 1
                 columns_sums[column] += 1
                 if row == column:
                     diagonal_sums[0] += 1
                 if row == grid_size - column - 1:
                     diagonal_sums[1] += 1
-            elif field_value == 2: # 'O' player
+            elif field_value == 2:  # 'O' player
                 rows_sums[row] -= 1
                 columns_sums[column] -= 1
                 if row == column:
-                    diagonal_sums[0] -=1
+                    diagonal_sums[0] -= 1
                 if row == grid_size - column - 1:
                     diagonal_sums[1] -= 1
 
@@ -136,7 +134,6 @@ def check_game_status(grid, grid_size):
         return 0
 
 def get_available_fields(grid, grid_size):
-
     available_fields = []
     for i in range(0, grid_size * grid_size):
         if grid[i] == 0:
@@ -144,7 +141,6 @@ def get_available_fields(grid, grid_size):
     return available_fields
 
 def simulate_ttt_game_for_neural_network_against_random(network, nn_player, random_player, grid_size):
-
     grid = [0 for j in range(0, grid_size * grid_size)]
     turn_counter = 0
     current_player = randint(1, 2)
@@ -155,11 +151,11 @@ def simulate_ttt_game_for_neural_network_against_random(network, nn_player, rand
         if current_player == nn_player:
             nn_move = network.make_move(grid, grid_size, nn_player)
             grid[nn_move] = nn_player
-        else: # random move
+        else:  # random move
             available_moves = get_available_fields(grid, grid_size)
             random_index = randint(0, len(available_moves) - 1)
             grid[random_index] = random_player
-        
+
         # if game ended, return game result
         game_status = check_game_status(grid, grid_size)
         if game_status != 0:
@@ -176,23 +172,22 @@ def simulate_ttt_game_for_neural_network_against_random(network, nn_player, rand
     return game_status
 
 def make_network_efficiency_stats(network, games_number, grid_size):
-
     neural_network_wins = 0
     neural_network_draws = 0
     neural_network_defeats = 0
     for i in range(0, games_number):
         nn_player = 1 if i % 2 == 1 else 2
         minmax_player = 2 if i % 2 == 1 else 1
-        
+
         game_result = simulate_ttt_game_for_neural_network_against_random(network, nn_player, minmax_player, grid_size)
-        
+
         if game_result == nn_player:
             neural_network_wins += 1
         elif game_result == 0:
             neural_network_draws += 1
         else:
             neural_network_defeats += 1
-    
+
     print("Neural Network vs. Random stats")
     print("===============================")
     print("Wins: {wins}\nDraws: {draws}\nDefeats: {defeats}".format(
@@ -200,11 +195,10 @@ def make_network_efficiency_stats(network, games_number, grid_size):
         draws=neural_network_draws,
         defeats=neural_network_defeats
     ))
-    
+
     return (neural_network_draws, neural_network_wins, neural_network_defeats)
 
 def simulate_ttt_scikit_time(grid_size, scikit_network):
-
     grid = [0 for j in range(0, grid_size * grid_size)]
     turn_counter = 0
     current_player = randint(1, 2)
@@ -230,10 +224,9 @@ def simulate_ttt_scikit_time(grid_size, scikit_network):
     return moves_time
 
 def make_network_time_stats(network, games_number, grid_size):
+    average_stats = [[i, 0] for i in range(grid_size**2)]
 
-    average_stats = [[i, 0] for i in range(grid_size**2)]   
-
-    for i in range(0, games_number):        
+    for i in range(0, games_number):
         time_stats = simulate_ttt_scikit_time(grid_size, network)
         for j in range(0, grid_size**2):
             average_stats[time_stats[j][0]][1] += time_stats[j][1]

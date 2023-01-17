@@ -8,14 +8,12 @@ class NeuralNetworkSklearn():
     _model_config = None
 
     def __init__(self, configuration):
-
         self._model = MLPRegressor(
             **configuration
         )
         self._model_config = configuration
 
     def learn(self, input_data, output_data):
-
         self._model.fit(input_data, output_data)
 
     def __fetch_available_moves(self, grid, grid_size):
@@ -29,7 +27,6 @@ class NeuralNetworkSklearn():
         return free_fields
 
     def make_move(self, grid, grid_size, neural_network_sign):
-
         available_moves = self.__fetch_available_moves(grid, grid_size)
 
         final_move_value = 0
@@ -53,13 +50,11 @@ class NeuralNetworkSklearn():
         return final_move_index
 
     def save_model(self, filename):
-
         dump(self._model, filename)
 
     def load_model(self, filename):
-
         try:
-            self._model = load(filename) 
+            self._model = load(filename)
         except FileNotFoundError:
             return False
         return True
