@@ -28,6 +28,7 @@ elif size == 4:
 elif size == 5:
     type = "games"
 
+
 def get_configuration(size: int):
     if size == 3:
         return config.network_configuration_3x3
@@ -44,6 +45,7 @@ if pathlib.Path("./network_{size}x{size}".format(size=size)).exists():
     print("Loading neural network...")
     network_sklearn.load_model("network_{size}x{size}".format(size=size))
     print("Model loaded...")
+
 
 def load_data(size: int):
     learning_dataset = {"input": [], "output": []}
@@ -101,6 +103,7 @@ if "--learn" in sys.argv:
     network_sklearn.learn(learning_input_data, learning_output_data)
     print("Network learnt...")
 
+
 def check_game_status(grid, grid_size):
     # initiate checkers
     rows_sums = [0 for i in range(grid_size)]
@@ -133,12 +136,14 @@ def check_game_status(grid, grid_size):
     else:
         return 0
 
+
 def get_available_fields(grid, grid_size):
     available_fields = []
     for i in range(0, grid_size * grid_size):
         if grid[i] == 0:
             available_fields.append(i)
     return available_fields
+
 
 def simulate_ttt_game_for_neural_network_against_random(network, nn_player, random_player, grid_size):
     grid = [0 for j in range(0, grid_size * grid_size)]
@@ -171,6 +176,7 @@ def simulate_ttt_game_for_neural_network_against_random(network, nn_player, rand
     game_status = check_game_status(grid, grid_size)
     return game_status
 
+
 def make_network_efficiency_stats(network, games_number, grid_size):
     neural_network_wins = 0
     neural_network_draws = 0
@@ -198,6 +204,7 @@ def make_network_efficiency_stats(network, games_number, grid_size):
 
     return (neural_network_draws, neural_network_wins, neural_network_defeats)
 
+
 def simulate_ttt_scikit_time(grid_size, scikit_network):
     grid = [0 for j in range(0, grid_size * grid_size)]
     turn_counter = 0
@@ -223,6 +230,7 @@ def simulate_ttt_scikit_time(grid_size, scikit_network):
         turn_counter += 1
     return moves_time
 
+
 def make_network_time_stats(network, games_number, grid_size):
     average_stats = [[i, 0] for i in range(grid_size**2)]
 
@@ -236,10 +244,12 @@ def make_network_time_stats(network, games_number, grid_size):
 
     return average_stats
 
+
 if "--learn" in sys.argv:
     print("Saving network to file...")
     network_sklearn.save_model("network_{size}x{size}".format(size=size))
     print("Network exported to file...")
+
 
 # generating efficiency stats
 if "--stats" in sys.argv:
@@ -258,6 +268,7 @@ if "--stats" in sys.argv:
 
     print("Efficiency stats prepared...")
     plt.show()
+
 
 if "--timestats" in sys.argv:
     print("Preparing time efficiency stats")

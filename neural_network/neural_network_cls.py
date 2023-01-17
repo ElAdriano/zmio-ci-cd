@@ -13,8 +13,10 @@ class NeuralNetworkSklearn():
         )
         self._model_config = configuration
 
+
     def learn(self, input_data, output_data):
         self._model.fit(input_data, output_data)
+
 
     def __fetch_available_moves(self, grid, grid_size):
 
@@ -25,6 +27,7 @@ class NeuralNetworkSklearn():
                 free_fields.append(i)
 
         return free_fields
+
 
     def make_move(self, grid, grid_size, neural_network_sign):
         available_moves = self.__fetch_available_moves(grid, grid_size)
@@ -49,8 +52,10 @@ class NeuralNetworkSklearn():
 
         return final_move_index
 
+
     def save_model(self, filename):
         dump(self._model, filename)
+
 
     def load_model(self, filename):
         try:
