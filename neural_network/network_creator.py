@@ -192,8 +192,6 @@ def make_network_efficiency_stats(network, games_number, grid_size):
             neural_network_draws += 1
         else:
             neural_network_defeats += 1
-
-        # print("Processed {processed_games_numbers} games out of {all_games}".format(processed_games_numbers=i + 1, all_games=games_number))
     
     print("Neural Network vs. Random stats")
     print("===============================")
