@@ -21,8 +21,7 @@ jobs:
           flake8 neural_network --count --max-complexity=10 --max-line-length=127 --statistics
           flake8 validators --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 validators --count --max-complexity=10 --max-line-length=127 --statistics
-          python tests.py
-      - name: Run unit tests with nose
+      - name: Run unit tests
         run: |
-          nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
+          python tests.py
         
