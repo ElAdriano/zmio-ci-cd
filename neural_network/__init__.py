@@ -1,2 +1,0 @@
-from .neural_network_cls import NeuralNetworkSklearn as NeuralNetwork
-from .networks_config import network_configuration_3x3, network_configuration_4x4, network_configuration_5x5

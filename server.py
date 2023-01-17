@@ -7,7 +7,8 @@ import ctypes
 import pathlib
 
 # neural network handling
-from neural_network import NeuralNetwork, network_configuration_3x3, network_configuration_4x4, network_configuration_5x5
+from neural_network.networks_config import network_configuration_3x3, network_configuration_4x4, network_configuration_5x5
+from neural_network.neural_network_cls import NeuralNetworkSklearn as NeuralNetwork
 
 neural_network_3x3 = NeuralNetwork(network_configuration_3x3)
 neural_network_4x4 = NeuralNetwork(network_configuration_4x4)
