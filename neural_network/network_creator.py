@@ -38,6 +38,7 @@ def get_configuration(size: int):
         return config.network_configuration_5x5
     return None
 
+
 configuration = get_configuration(size)
 network_sklearn = NeuralNetworkSklearn(configuration)
 
