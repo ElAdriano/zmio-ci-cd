@@ -104,7 +104,7 @@ if "--learn" in sys.argv:
     network_sklearn.learn(learning_input_data, learning_output_data)
     print("Network learnt...")
 
-
+# noqa: C901
 def check_game_status(grid, grid_size):
     # initiate checkers
     rows_sums = [0 for i in range(grid_size)]
