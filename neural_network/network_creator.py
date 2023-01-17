@@ -1,7 +1,13 @@
-from joblib.numpy_pickle import load
 import networks_config as config
 
 import sys
+# load trained model
+import pathlib
+from neural_network_cls import NeuralNetworkSklearn
+from random import randint
+import numpy
+import time
+import matplotlib.pyplot as plt
 
 allowed_sizes = [3, 4, 5]
 
@@ -32,18 +38,15 @@ def get_configuration(size: int):
     return None
 
 configuration = get_configuration(size)
-
-from neural_network_cls import NeuralNetworkSklearn
 network_sklearn = NeuralNetworkSklearn(configuration)
 
-# load trained model
-import pathlib
 if pathlib.Path("./network_{size}x{size}".format(size=size)).exists():
     print("Loading neural network...")
     network_sklearn.load_model("network_{size}x{size}".format(size=size))
     print("Model loaded...")
 
 def load_data(size: int):
+
     learning_dataset = { "input": [], "output": [] }
     validation_dataset = { "input": [], "output": [] }
 
@@ -92,7 +95,6 @@ if "--learn" in sys.argv:
     datasets = load_data(size)
     print("Learning data loaded...")
 
-    import numpy
     learning_input_data = numpy.array(datasets[0]['input']).reshape((-1, size**2))
     learning_output_data = numpy.array(datasets[0]['output']).reshape((-1, 3))
 
@@ -100,9 +102,8 @@ if "--learn" in sys.argv:
     network_sklearn.learn(learning_input_data, learning_output_data)
     print("Network learnt...")
 
-from random import randint
-
 def check_game_status(grid, grid_size):
+
     # initiate checkers
     rows_sums = [0 for i in range(grid_size)]
     columns_sums = [0 for i in range(grid_size)]
@@ -135,6 +136,7 @@ def check_game_status(grid, grid_size):
         return 0
 
 def get_available_fields(grid, grid_size):
+
     available_fields = []
     for i in range(0, grid_size * grid_size):
         if grid[i] == 0:
@@ -142,6 +144,7 @@ def get_available_fields(grid, grid_size):
     return available_fields
 
 def simulate_ttt_game_for_neural_network_against_random(network, nn_player, random_player, grid_size):
+
     grid = [0 for j in range(0, grid_size * grid_size)]
     turn_counter = 0
     current_player = randint(1, 2)
@@ -173,6 +176,7 @@ def simulate_ttt_game_for_neural_network_against_random(network, nn_player, rand
     return game_status
 
 def make_network_efficiency_stats(network, games_number, grid_size):
+
     neural_network_wins = 0
     neural_network_draws = 0
     neural_network_defeats = 0
@@ -193,13 +197,16 @@ def make_network_efficiency_stats(network, games_number, grid_size):
     
     print("Neural Network vs. Random stats")
     print("===============================")
-    print("Wins: {wins}\nDraws: {draws}\nDefeats: {defeats}".format(wins=neural_network_wins, draws=neural_network_draws, defeats=neural_network_defeats))
+    print("Wins: {wins}\nDraws: {draws}\nDefeats: {defeats}".format(
+        wins=neural_network_wins,
+        draws=neural_network_draws,
+        defeats=neural_network_defeats
+    ))
     
     return (neural_network_draws, neural_network_wins, neural_network_defeats)
 
-import time
-
 def simulate_ttt_scikit_time(grid_size, scikit_network):
+
     grid = [0 for j in range(0, grid_size * grid_size)]
     turn_counter = 0
     current_player = randint(1, 2)
@@ -225,12 +232,13 @@ def simulate_ttt_scikit_time(grid_size, scikit_network):
     return moves_time
 
 def make_network_time_stats(network, games_number, grid_size):
+
     average_stats = [[i, 0] for i in range(grid_size**2)]   
 
     for i in range(0, games_number):        
         time_stats = simulate_ttt_scikit_time(grid_size, network)
         for j in range(0, grid_size**2):
-            average_stats[ time_stats[j][0] ][1] += time_stats[j][1]
+            average_stats[time_stats[j][0]][1] += time_stats[j][1]
 
     for i in range(grid_size**2):
         average_stats[i][1] /= games_number
@@ -245,7 +253,6 @@ if "--learn" in sys.argv:
 # generating efficiency stats
 if "--stats" in sys.argv:
     print("Preparing efficiency stats...")
-    import matplotlib.pyplot as plt
 
     labels = list(['Remisy', 'Zwycięstwa', 'Porażki'])
     values = make_network_efficiency_stats(network_sklearn, 100, size)
@@ -255,15 +262,14 @@ if "--stats" in sys.argv:
     ax.pie(values, explode=explode, labels=labels, autopct='%1.1f%%', shadow=False, startangle=90)
     ax.axis('equal')
     ax.legend(labels)
-    ax.set_title("Wykres kołowy skuteczności sieci neuronowej\ndla gry 'Kółko i krzyżyk' (na planszy o wymiarach {size}x{size})\n".format(size=size))
+    ax.set_title("Wykres kołowy skuteczności sieci neuronowej\ndla gry 'Kółko i krzyżyk' (na planszy o wymiarach \
+{size}x{size})\n".format(size=size))
 
     print("Efficiency stats prepared...")
     plt.show()
 
 if "--timestats" in sys.argv:
     print("Preparing time efficiency stats")
-
-    import matplotlib.pyplot as plt
 
     times = make_network_time_stats(network_sklearn, 100, size)
     # Create a figure containing a single axes
@@ -276,7 +282,8 @@ if "--timestats" in sys.argv:
 
     ax.set_xlabel("Liczba wolnych pól")
     ax.set_ylabel("Średni czas określania ruchu [ns]")
-    ax.set_title("Wykres czasu predykcjonowania ruchu przez sieć neuronową dla\nplanszy wym. {size}x{size} w zależności od liczby zaznaczonych pól\n".format(size=size))
+    ax.set_title("Wykres czasu predykcjonowania ruchu przez sieć neuronową dla\nplanszy wym. \
+{size}x{size} w zależności od liczby zaznaczonych pól\n".format(size=size))
 
     print("Time efficiency stats prepared...")
     plt.show()

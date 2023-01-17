@@ -1,6 +1,7 @@
 from sklearn.neural_network import MLPRegressor
 from joblib import dump, load
 
+
 class NeuralNetworkSklearn():
     _model = None
     _model_config = None
@@ -31,7 +32,7 @@ class NeuralNetworkSklearn():
 
         # predict game final status after each move
         for move in available_moves:
-            grid_copy = [ grid[i] for i in range(0, grid_size * grid_size) ]
+            grid_copy = [grid[i] for i in range(0, grid_size * grid_size)]
             grid_copy[move] = neural_network_sign
 
             # get predictions
@@ -52,7 +53,6 @@ class NeuralNetworkSklearn():
     def load_model(self, filename):
         try:
             self._model = load(filename) 
-        except FileNotFoundError as err:
+        except FileNotFoundError:
             return False
         return True
-        
