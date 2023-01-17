@@ -18,6 +18,7 @@ class ValidationError(Exception):
         self._field = field_name
         self._message = exception_message
 
+
 class ValidatorFieldError(Exception):
     '''
     Validator field exception (meant to be thrown only when validator field is created improperly).
