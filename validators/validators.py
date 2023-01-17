@@ -171,9 +171,19 @@ class IntegerFieldValidator(BaseFieldValidator):
         try:
             self._value = int(self._value)
         except ValueError:  # raise ValidationError if could not cast to integer
-            raise ValidationError(self._name, "Provided value for field '{validator_field_name}' is not an integer.".format(validator_field_name=self._name))
+            raise ValidationError(
+                self._name,
+                "Provided value for field '{validator_field_name}' is not an integer.".format(
+                    validator_field_name=self._name
+                )
+            )
         except TypeError:
-            raise ValidationError(self._name, "Provided value for field '{validator_field_name}' is not an integer.".format(validator_field_name=self._name))
+            raise ValidationError(
+                self._name,
+                "Provided value for field '{validator_field_name}' is not an integer.".format(
+                    validator_field_name=self._name
+                )
+            )
 
         # min value validation (if it exists)
         if self._min_value is not None:
@@ -221,7 +231,7 @@ class StringFieldValidator(BaseFieldValidator):  # noqa: C901
 
     errors = None
 
-    def __init__(self, min_length=None, max_length=None, empty=None, *args, **kwargs):
+    def __init__(self, min_length=None, max_length=None, empty=None, *args, **kwargs):  # noqa: C901
         '''
         Initializes StringFieldValidator.
 
@@ -421,7 +431,7 @@ class TicTacToeRequestValidator():
 
         return rows_sums, columns_sums, diagonal_sums
 
-    def __validate(self):
+    def __validate(self):  # noqa: C901
         '''
         Validates TicTacToeRequestValidator.
 
