@@ -1,9 +1,9 @@
 from unittest import TestCase
 import unittest
 
-from validators import IntegerFieldValidator, StringFieldValidator
-from validators import ValidationError, ValidatorFieldError
-from validators import TicTacToeRequestValidator
+from validators.validators import IntegerFieldValidator, StringFieldValidator
+from validators.exceptions import ValidationError, ValidatorFieldError
+from validators.validators import TicTacToeRequestValidator
 
 # VALIDATOR FIELDS TESTS
 

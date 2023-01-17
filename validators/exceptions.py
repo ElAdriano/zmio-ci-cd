@@ -10,7 +10,7 @@ class ValidationError(Exception):
     _field = None
     _message = None
 
-    def __init__(self, field_name = None, exception_message = None):
+    def __init__(self, field_name=None, exception_message=None):
         # raising exception for field validation, if any argument is missing => raise simple exception
         if field_name is None or exception_message is None:
             raise Exception("ValidationError raised improperly - missing field_name or exception_message")
@@ -30,10 +30,10 @@ class ValidatorFieldError(Exception):
     _field = None
     _message = None
 
-    def __init__(self, field_name = None, exception_message = None):
+    def __init__(self, field_name=None, exception_message=None):
         # raising exception for field validation, if any argument is missing => raise simple exception
         if field_name is None or exception_message is None:
             raise Exception("ValidatorFieldError raised improperly - missing field_name or exception_message")
-        
+
         self._field = field_name
         self._message = exception_message

@@ -20,7 +20,7 @@ neural_network_4x4.load_model("./neural_network/network_4x4")
 neural_network_5x5.load_model("./neural_network/network_5x5")
 
 # request handling
-from validators import TicTacToeRequestValidator
+from validators.validators import TicTacToeRequestValidator
 
 # response status enum class
 class ResponseStatus(Enum):
