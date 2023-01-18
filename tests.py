@@ -197,7 +197,8 @@ class IntegerFieldValidatorTest(TestCase):
 
         valid = validator.is_valid()
 
-        self.assertFalse(validator_field_error_thrown|(not valid))
+        test_passed = (not validator_field_error_thrown and valid)
+        self.assertTrue(test_passed)
 
     def test_proper_validator_field_validation_with_limits(self):
         '''

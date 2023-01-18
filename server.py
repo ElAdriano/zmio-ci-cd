@@ -122,7 +122,7 @@ def tic_tac_toe_min_max_request_handler():
         minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'],
                                                   request_data['moving_player'], MINMAX_5x5_TREE_PROCESSING_LIMIT)
 
-    response = make_response({'move':minmax_move}, ResponseStatus.HTTP_200_OK.value)
+    response = make_response({'move': minmax_move}, ResponseStatus.HTTP_200_OK.value)
     return response
 
 
@@ -156,8 +156,9 @@ def tic_tac_toe_neural_network_request_handler():
     elif grid_size == 5:
         nn_move = neural_network_5x5.make_move(grid, grid_size, request_data['moving_player'])
 
-    response = make_response({ 'move': nn_move }, ResponseStatus.HTTP_200_OK.value)
+    response = make_response({'move': nn_move}, ResponseStatus.HTTP_200_OK.value)
     return response
+
 
 if __name__ == "__main__":
     server.run(debug=False)
