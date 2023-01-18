@@ -7,8 +7,15 @@ import ctypes
 import pathlib
 
 # neural network handling
-from neural_network.networks_config import network_configuration_3x3, network_configuration_4x4, network_configuration_5x5
+from neural_network.networks_config import (
+    network_configuration_3x3,
+    network_configuration_4x4,
+    network_configuration_5x5
+)
 from neural_network.neural_network_cls import NeuralNetworkSklearn as NeuralNetwork
+# request handling
+from validators.validators import TicTacToeRequestValidator
+
 
 neural_network_3x3 = NeuralNetwork(network_configuration_3x3)
 neural_network_4x4 = NeuralNetwork(network_configuration_4x4)
@@ -19,8 +26,6 @@ neural_network_3x3.load_model("./neural_network/network_3x3")
 neural_network_4x4.load_model("./neural_network/network_4x4")
 neural_network_5x5.load_model("./neural_network/network_5x5")
 
-# request handling
-from validators.validators import TicTacToeRequestValidator
 
 # response status enum class
 class ResponseStatus(Enum):
@@ -35,6 +40,7 @@ MINMAX_4x4_TREE_PROCESSING_LIMIT = 5
 MINMAX_5x5_TREE_PROCESSING_LIMIT = 3
 
 server = Flask(__name__)
+
 
 # common function for request handlers
 def prefetch_request_data(request):
@@ -60,7 +66,7 @@ def prefetch_request_data(request):
 
     # prefetch 'grid'
     grid = request.form.get("grid", None)
-    
+
     # prefetch 'moving_player'
     try:
         moving_player = request.form.get("moving_player", None)
@@ -76,6 +82,7 @@ def prefetch_request_data(request):
 
     return request_data
 
+
 @server.route("/tic-tac-toe/min-max", methods=["POST"])
 def tic_tac_toe_min_max_request_handler():
     '''
@@ -85,12 +92,12 @@ def tic_tac_toe_min_max_request_handler():
     # get request data from incoming request
     request_data = prefetch_request_data(request)
     validator = TicTacToeRequestValidator(request_data)
-    
+
     # check if received request data are correct
     validator_valid = validator.is_valid()
     if not validator_valid:
         return make_response(validator.errors, ResponseStatus.HTTP_400_BAD_REQUEST.value)
-    
+
     # assign min-max algorithm to calculate next move
     minmax_libname = str(pathlib.Path().absolute()) + "/minmax/lib/minmax.so"
     minmax_lib = ctypes.CDLL(minmax_libname)
@@ -106,14 +113,18 @@ def tic_tac_toe_min_max_request_handler():
 
     grid_size = request_data['grid_size']
     if grid_size == 3:
-        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'], request_data['moving_player'], MINMAX_3x3_TREE_PROCESSING_LIMIT)
+        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'],
+                                                  request_data['moving_player'], MINMAX_3x3_TREE_PROCESSING_LIMIT)
     elif grid_size == 4:
-        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'], request_data['moving_player'], MINMAX_4x4_TREE_PROCESSING_LIMIT)
+        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'],
+                                                  request_data['moving_player'], MINMAX_4x4_TREE_PROCESSING_LIMIT)
     elif grid_size == 5:
-        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'], request_data['moving_player'], MINMAX_5x5_TREE_PROCESSING_LIMIT)
-    
+        minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'],
+                                                  request_data['moving_player'], MINMAX_5x5_TREE_PROCESSING_LIMIT)
+
     response = make_response({ 'move' : minmax_move }, ResponseStatus.HTTP_200_OK.value)
     return response
+
 
 @server.route("/tic-tac-toe/neural-network", methods=["POST"])
 def tic_tac_toe_neural_network_request_handler():
@@ -124,7 +135,7 @@ def tic_tac_toe_neural_network_request_handler():
     # get request data from incoming request
     request_data = prefetch_request_data(request)
     validator = TicTacToeRequestValidator(request_data)
-    
+
     # check if received request data are correct
     validator_valid = validator.is_valid()
     if not validator_valid:
@@ -144,7 +155,7 @@ def tic_tac_toe_neural_network_request_handler():
         nn_move = neural_network_4x4.make_move(grid, grid_size, request_data['moving_player'])
     elif grid_size == 5:
         nn_move = neural_network_5x5.make_move(grid, grid_size, request_data['moving_player'])
-    
+
     response = make_response({ 'move': nn_move }, ResponseStatus.HTTP_200_OK.value)
     return response
 
