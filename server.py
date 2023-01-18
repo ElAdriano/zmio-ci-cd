@@ -122,7 +122,7 @@ def tic_tac_toe_min_max_request_handler():
         minmax_move = minmax_lib.make_minmax_move(grid, request_data['grid_size'],
                                                   request_data['moving_player'], MINMAX_5x5_TREE_PROCESSING_LIMIT)
 
-    response = make_response({ 'move' : minmax_move }, ResponseStatus.HTTP_200_OK.value)
+    response = make_response({'move':minmax_move}, ResponseStatus.HTTP_200_OK.value)
     return response
 
 

@@ -7,6 +7,7 @@ from validators.validators import TicTacToeRequestValidator
 
 # VALIDATOR FIELDS TESTS
 
+
 class IntegerFieldValidatorTest(TestCase):
     '''
     Validator integer field tests class.
@@ -21,7 +22,7 @@ class IntegerFieldValidatorTest(TestCase):
 
         validator_field_error_thrown = False
         try:
-            validator = IntegerFieldValidator(field_name="test_int", required=False, nullable=False)
+            IntegerFieldValidator(field_name="test_int", required=False, nullable=False)
         except ValidatorFieldError:
             validator_field_error_thrown = True
 
@@ -305,6 +306,7 @@ class StringFieldValidatorTest(TestCase):
     '''
 
     # PROPER VALIDATOR DEFINITION TESTS
+
 
     def test_validator_field_proper_definition_without_optional_params(self):
         validator_error_thrown = False
