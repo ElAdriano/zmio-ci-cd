@@ -301,14 +301,13 @@ class IntegerFieldValidatorTest(TestCase):
         valid = validator.is_valid()
         self.assertFalse(valid)
 
+
 class StringFieldValidatorTest(TestCase):
     '''
     String field validator tests class
     '''
 
     # PROPER VALIDATOR DEFINITION TESTS
-
-
     def test_validator_field_proper_definition_without_optional_params(self):
         validator_error_thrown = False
         try:
@@ -1036,6 +1035,7 @@ class TicTacToeValidatorTest(TestCase):
         valid_5x5 = self.__validate_validator(request_data)
 
         self.assertTrue(not valid_3x3 and not valid_4x4 and not valid_5x5)
+
 
 if __name__ == "__main__":
     unittest.main()
